@@ -67,28 +67,25 @@ const images = [
   },
 ];
 
-const gallery = document.querySelector('.gallery');
-gallery.insertAdjacentHTML('beforeend', createMarkup(images));
-
-function createMarkup(array) {
-  return array
-    .map(
-      image => `
+const galleryContainer = document.querySelector('.gallery');
+const galleryMarkup = images
+  .map(({ preview, original, description }) => {
+    return `
       <li class="gallery-item">
-      <a class="gallery-link" href="${image.original}">
-         <img src="${image.preview}" alt="${image.description}" class="gallery-image">
-      </a>
-      </li>
-    `
-    )
-    .join('');
-}
+        <a class="gallery-link" href="${original}">
+          <img
+            class="gallery-image"
+            src="${preview}"
+            alt="${description}"
+          />
+        </a>
+      </li>`;
+  })
+  .join('');
 
-gallery = new SimpleLightbox('.gallery a', {
-  captions: true,
+galleryContainer.innerHTML = galleryMarkup;
+
+new SimpleLightbox('.gallery a', {
   captionsData: 'alt',
   captionDelay: 250,
-  animationSpeed: 400,
-  overlay: true,
-  overlayOpacity: 0.6,
 });
